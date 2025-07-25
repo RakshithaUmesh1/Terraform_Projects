@@ -5,7 +5,7 @@ provider "aws"{
 #creating vpc
 resource "aws_vpc" "my_vpc"{
         cidr_block="10.0.0.0/16"
-        enable_dns_hostname=true
+        enable_dns_hostnames=true
         enable_dns_support=true
 tags = {
       Name="ec2-project"
@@ -16,7 +16,7 @@ tags = {
 resource "aws_subnet" "subnet-1"{
       vpc_id=aws_vpc.my_vpc.id
       cidr_block="10.0.1.0/24"
-      availablity_zone="ap-south-1a"
+      availability_zone="ap-south-1a"
       map_public_ip_on_launch=true
 tags = {
     Name="subent-1"
@@ -39,11 +39,11 @@ resource "aws_internet_gateway" "my-igw"{
     vpc_id=aws_vpc.my_vpc.id
  tags = {
    Name="My-Igw"
+ }
 }
-
 #creating route table
 resource "aws_route_table" "public_route_table"{
-       vpc_id=aws-vpc.my_vpc.id
+       vpc_id=aws_vpc.my_vpc.id
  tags = {
      Name="route_table"
  }
@@ -52,7 +52,7 @@ resource "aws_route_table" "public_route_table"{
 #creating aws route
 resource "aws_route" "public_route"{
        route_table_id=aws_route_table.public_route_table.id
-       destination_udr_block="0.0.0.0/0"
+       destination_cidr_block="0.0.0.0/0"
        gateway_id=aws_internet_gateway.my-igw.id
  }
 
@@ -64,7 +64,7 @@ resource "aws_route_table_association" "public_subnet_association"{
 # creating instance
 
 resource "aws_instance" "ec2" {
-    subnet_id=aws-subnet.student-1.id
+    subnet_id=aws_subnet.subnet-1.id
     ami="ami-0d0ad8bb301edb745"
     instance_type="t2.micro"
     security_groups= [ "default" ]
@@ -75,7 +75,7 @@ resource "aws_instance" "ec2" {
    delete_on_termination=true
 }
 tags = {
-    name="my-first-ec2"
+    Name="my-first-ec2"
 }
 userdata=file("index.sh")
  }
