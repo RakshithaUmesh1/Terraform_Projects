@@ -4,6 +4,14 @@ pipeline {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     }
+    parameters {
+        choice(
+            name: 'terraformAction',
+            choices: ['apply', 'destroy'],
+            description: 'Choose your Terraform action to perform'
+        )
+    }
+
     stages {
         stage("Checkout") {
             steps {
@@ -31,12 +39,23 @@ pipeline {
             }
         }
 
-        stage("Terraform Apply") {
-            steps {
-                dir("EC2-Instance/EC2-Instance") {
-                    sh 'terraform apply -auto-approve'
+        stage('Apply or Destroy') {
+            when {
+                expression {
+                    return params.terraformAction == 'apply' || params.terraformAction == 'destroy'
                 }
             }
+            steps {
+                dir('terraform/VPC') {
+                    script {
+                        if (params.terraformAction == 'apply') {
+                            sh 'terraform apply -input=false tfplan'
+                        } else if (params.terraformAction == 'destroy') {
+                            sh 'terraform destroy -auto-approve'
+                        }
+                }
+             }
+          }
         }
     }
 }
