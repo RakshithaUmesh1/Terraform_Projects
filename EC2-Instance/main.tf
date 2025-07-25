@@ -100,7 +100,8 @@ resource "aws_instance" "ec2" {
     subnet_id=aws_subnet.subnet-1.id
     ami="ami-0d0ad8bb301edb745"
     instance_type="t2.micro"
-   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
+    vpc_security_group_ids = [aws_security_group.allow_ssh_http.id]
+
     key_name="new-key"
    root_block_device{
    volume_size=20
