@@ -46,7 +46,7 @@ pipeline {
                 }
             }
             steps {
-                dir('terraform/VPC') {
+                dir("EC2-Instance/EC2-Instance"){
                     script {
                         if (params.terraformAction == 'apply') {
                             sh 'terraform apply -auto-approve'
