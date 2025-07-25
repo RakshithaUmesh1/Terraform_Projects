@@ -16,7 +16,7 @@ tags = {
 resource "aws_subnet" "subnet-1"{
       vpc_id=aws_vpc.my_vpc.id
       cidr_block="10.0.1.0/24"
-      availability_zone="ap-south-1a"
+      availablity_zone="ap-south-1a"
       map_public_ip_on_launch=true
 tags = {
     Name="subent-1"
@@ -77,6 +77,6 @@ resource "aws_instance" "ec2" {
 tags = {
     Name="my-first-ec2"
 }
-userdata=file("index.sh")
+user_data=file("index.sh")
  
 }
