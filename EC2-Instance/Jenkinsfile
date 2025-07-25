@@ -3,29 +3,37 @@ pipeline {
 
     stages {
         stage("Checkout") {
+            dir("EC2-Instance")
             steps {
                 git branch: 'main',
                     url: 'https://github.com/RakshithaUmesh1/Terraform_Projects.git'
             }
         }
+    }
 
         stage("Terraform Init and validate") {
+            dir("EC2-Instance/EC2-Instance"){
             steps {
                 sh 'terraform init'
                 sh 'terraform validate'
             }
+          }
         }
 
         stage("Terraform plan") {
+            dir("EC2-Instance/EC2-Instance") {
             steps {
                 sh 'terraform plan'
             }
+          }
         }
 
         stage("Terraform Apply") {
+            dir("EC2-Instance-EC2/Instance")
             steps {
                 sh 'terraform apply -auto-approve'
             }
+          }
         }
     }
 }
