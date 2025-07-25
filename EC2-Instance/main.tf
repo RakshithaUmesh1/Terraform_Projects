@@ -17,7 +17,7 @@ tags = {
 resource "aws_subnet" "subnet-1"{
       vpc_id=aws_vpc.my_vpc.id
       cidr_block="10.0.1.0/24"
-     availablity_zone="ap-south-1a"
+     availability_zone="ap-south-1a"
       map_public_ip_on_launch=true
 tags = {
     Name="subent-1"
@@ -28,7 +28,7 @@ tags = {
 resource "aws_subnet" "subent-2" {
   vpc_id=aws_vpc.my_vpc.id
   cidr_block="10.0.2.0/24"
-  availablity_zone="ap-south-1b"
+   availability_zone="ap-south-1b"
   map_public_ip_on_launch=true
  tags = {
     Name="Subent-2"
