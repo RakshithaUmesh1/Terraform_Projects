@@ -3,8 +3,7 @@ pipeline {
      stages{
         stage("Checkout"){
               git branch : 'main' ,
-                url: '
-               https://github.com/RakshithaUmesh1/Terraform_Projects.git'
+                url: 'https://github.com/RakshithaUmesh1/Terraform_Projects.git'
   }
 }
 stage("Terraform init and plan"){
