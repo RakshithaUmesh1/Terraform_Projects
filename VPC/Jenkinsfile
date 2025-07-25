@@ -1,0 +1,75 @@
+
+pipeline {
+    agent any
+
+    parameters {
+        choice(
+            name: 'terraformAction',
+            choices: ['apply', 'destroy'],
+            description: 'Choose your Terraform action to perform'
+        )
+    }
+
+    environment {
+        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                dir('terraform') {
+                    git branch: 'main', url: 'https://github.com/RakshithaUmesh1/Terraform_Projects.git'
+                }
+            }
+        }
+
+        stage('Terraform Init and Plan') {
+            steps {
+                dir('terraform/VPC') {
+                    sh 'terraform init'
+                    sh 'terraform plan -out=tfplan'
+                    sh 'terraform show -no-color tfplan > tfplan.txt'
+                }
+            }
+        }
+
+        stage('Approval') {
+            steps {
+                script {
+                    def plan = readFile('terraform/VPC/tfplan.txt')
+                    input(
+                        message: "Do you want to proceed with the Terraform ${params.terraformAction} action?",
+                        parameters: [
+                            text(
+                                name: 'plan',
+                                description: 'Review the Terraform plan below before approving:',
+                                defaultValue: plan
+                            )
+                        ]
+                    )
+                }
+            }
+        }
+
+        stage('Apply or Destroy') {
+            when {
+                expression {
+                    return params.terraformAction == 'apply' || params.terraformAction == 'destroy'
+                }
+            }
+            steps {
+                dir('terraform/VPC') {
+                    script {
+                        if (params.terraformAction == 'apply') {
+                            sh 'terraform apply -input=false tfplan'
+                        } else if (params.terraformAction == 'destroy') {
+                            sh 'terraform destroy -auto-approve'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
