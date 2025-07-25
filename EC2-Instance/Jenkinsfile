@@ -9,16 +9,16 @@ pipeline {
             }
         }
 
-        stage("Terraform Init and Plan") {
+        stage("Terraform Init and validate") {
             steps {
                 sh 'terraform init'
-                sh 'terraform plan'
+                sh 'terraform validate'
             }
         }
 
-        stage("Terraform Syntax Validate") {
+        stage("Terraform plan") {
             steps {
-                sh 'terraform validate'
+                sh 'terraform plan'
             }
         }
 
