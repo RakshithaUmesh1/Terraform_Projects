@@ -12,8 +12,9 @@ pipeline {
     }
 
         stage("Terraform Init and validate") {
-            dir("EC2-Instance/EC2-Instance"){
+           
             steps {
+                dir("EC2-Instance/EC2-Instance"){
                 sh 'terraform init'
                 sh 'terraform validate'
             }
@@ -21,16 +22,17 @@ pipeline {
         }
 
         stage("Terraform plan") {
-            dir("EC2-Instance/EC2-Instance") {
+            
             steps {
+                dir("EC2-Instance/EC2-Instance"){
                 sh 'terraform plan'
             }
           }
         }
 
         stage("Terraform Apply") {
-            dir("EC2-Instance-EC2/Instance")
             steps {
+                 dir("EC2-Instance/EC2-Instance"){
                 sh 'terraform apply -auto-approve'
             }
           }
