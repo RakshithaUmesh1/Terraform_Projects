@@ -29,7 +29,7 @@ resource "aws_subnet" "subent-2" {
   cidr_block="10.0.2.0/24"
   availablity_zone="ap-south-1b"
   map_public_ip_on_launch=true
- tags - {
+ tags = {
     Name="Subent-2"
   }
 }
