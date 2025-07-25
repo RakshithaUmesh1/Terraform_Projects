@@ -78,5 +78,5 @@ tags = {
     Name="my-first-ec2"
 }
 userdata=file("index.sh")
- }
+ 
 }
