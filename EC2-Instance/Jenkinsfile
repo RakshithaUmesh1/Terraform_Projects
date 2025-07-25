@@ -1,27 +1,31 @@
 pipeline {
- agent any 
-     stages{
-        stage("Checkout"){
-              git branch : 'main' ,
-                url: 'https://github.com/RakshithaUmesh1/Terraform_Projects.git'
-  }
-}
-stage("Terraform init and plan"){
-       steps{
-         sh 'terraform init'
-         sh 'terraform plan'
-  }
-}
-stage("Terraform Syntax validate"){
-    steps{
-       sh 'terraform validate'
-  }
-}
-stage("Terraform apply") {
-     steps{
-          sh 'terraform apply'
-    }
-  }
+    agent any
 
- }
+    stages {
+        stage("Checkout") {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/RakshithaUmesh1/Terraform_Projects.git'
+            }
+        }
+
+        stage("Terraform Init and Plan") {
+            steps {
+                sh 'terraform init'
+                sh 'terraform plan'
+            }
+        }
+
+        stage("Terraform Syntax Validate") {
+            steps {
+                sh 'terraform validate'
+            }
+        }
+
+        stage("Terraform Apply") {
+            steps {
+                sh 'terraform apply -auto-approve'
+            }
+        }
+    }
 }
