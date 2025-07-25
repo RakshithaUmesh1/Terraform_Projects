@@ -3,8 +3,8 @@ pipeline {
 
     stages {
         stage("Checkout") {
-            dir("EC2-Instance")
             steps {
+                dir("EC2-Instance")
                 git branch: 'main',
                     url: 'https://github.com/RakshithaUmesh1/Terraform_Projects.git'
             }
